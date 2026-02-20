@@ -6,10 +6,10 @@ name: Python Tests
 on:
   push:
     branches: [ "main" ]
-    paths-ignore: [ "**.md", "**.rst" ]
+    # paths-ignore: [ "**.md", "**.rst" ]
   pull_request:
     branches: [ "main" ]
-    paths-ignore: [ "**.md", "**.rst" ]
+    # paths-ignore: [ "**.md", "**.rst" ]
 
 permissions:
   contents: read
