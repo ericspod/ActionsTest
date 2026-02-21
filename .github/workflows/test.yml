@@ -32,7 +32,7 @@ jobs:
       id: check-changes
       shell: bash
       run: |
-        result="skip=1"
+        result=1
         mkdir -p /tmp/check_changes
         git diff --name-only HEAD^..HEAD ':!docs' | while read i
         do
@@ -41,11 +41,11 @@ jobs:
           if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            result="skip=0"
+            result=0
             break
           fi
         done
-        echo $result >> $GITHUB_OUTPUT
+        echo "skip=$result" >> $GITHUB_OUTPUT
     - name: Install dependencies
       shell: bash
       if: ${{ steps.check-changes.outputs.skip == 0 }}
