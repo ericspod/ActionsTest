@@ -46,6 +46,10 @@ jobs:
           fi
         done
         echo "skip=$result" >> $GITHUB_OUTPUT
+    - name: Print output
+      shell: bash
+      run: |
+        echo "[${{ steps.check-changes.outputs.skip }}]"
     - name: Install dependencies
       shell: bash
       if: ${{ steps.check-changes.outputs.skip == '0' }}
