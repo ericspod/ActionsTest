@@ -32,6 +32,7 @@ jobs:
       id: check-changes
       shell: bash
       run: |
+        echo "skip=1" >> $GITHUB_OUTPUT
         mkdir -p /tmp/check_changes
         git diff --name-only HEAD^..HEAD ':!docs' | while read i
         do
@@ -40,7 +41,7 @@ jobs:
           if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            echo "skip=1" >> $GITHUB_OUTPUT
+            echo "skip=0" >> $GITHUB_OUTPUT
             break
           fi
         done
