@@ -41,7 +41,6 @@ jobs:
           if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            #result="skip=0"
             break
           fi
         done
