@@ -40,7 +40,7 @@ jobs:
           if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            echo "skip=0" >> $GITHUB_OUTPUT
+            echo "skip=1" >> $GITHUB_OUTPUT
             break
           fi
         done
