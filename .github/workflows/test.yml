@@ -41,6 +41,7 @@ jobs:
           if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
+            result="skip=0"
             break
           fi
         done
@@ -49,7 +50,6 @@ jobs:
       shell: bash
       if: ${{ steps.check-changes.outputs.skip == 0 }}
       run: |
-        echo ${{ steps.check-changes.outputs.skip }}
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
