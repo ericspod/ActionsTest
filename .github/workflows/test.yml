@@ -45,6 +45,7 @@ jobs:
             break
           fi
         done
+        echo "Saving result [$result]"
         echo "skip=$result" >> $GITHUB_OUTPUT
     - name: Print output
       shell: bash
