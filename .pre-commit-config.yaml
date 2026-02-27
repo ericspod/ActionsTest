@@ -25,7 +25,7 @@ repos:
     hooks:
       - id: autofix
         name: autofix
-        entry: runtests.sh --autofix'
+        entry: bash runtests.sh --autofix'
         language: system
         types: [python]
         pass_filenames: false
