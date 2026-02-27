@@ -8,5 +8,5 @@ This is a test module for testing action rules when PRs of different types are p
 
 ## Pre-commit
 
-This is used to run the testing script to autofix formatting and isort, though this isn't implemented yet. 
+This is used to run the testing script to autofix formatting and isort, though this isn't implemented yet.
 Relies on https://pre-commit.ci.
