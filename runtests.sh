@@ -1,4 +1,4 @@
-#! /bin/bash 
+#! /bin/bash
 
 PY_EXE=${TEST_PY_EXE:-$(which python)}
 
