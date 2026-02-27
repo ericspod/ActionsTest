@@ -3,9 +3,9 @@ default_language_version:
 
 ci:
   autofix_prs: true
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit suggestions'
-  autoupdate_schedule: quarterly
-  # submodules: true
+  autofix_commit_msg: '[pre-commit.ci] Fixing issues with pre-commit'
+  autoupdate_commit_msg: '[pre-commit.ci] autoupdate'
+  autoupdate_schedule: weekly
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
