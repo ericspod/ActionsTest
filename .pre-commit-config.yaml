@@ -1,0 +1,32 @@
+default_language_version:
+  python: python3
+
+ci:
+  autofix_prs: true
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit suggestions'
+  autoupdate_schedule: quarterly
+  # submodules: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-toml
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+  - repo: local
+    hooks:
+      - id: autofix
+        name: autofix
+        entry: bash runtests.sh --autofix
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [black]
