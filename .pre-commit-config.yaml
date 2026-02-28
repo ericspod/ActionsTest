@@ -21,12 +21,12 @@ repos:
         args: ['--maxkb=1024']
       - id: end-of-file-fixer
       - id: mixed-line-ending
-  # - repo: local
-  #   hooks:
-  #     - id: autofix
-  #       name: autofix
-  #       entry: bash runtests.sh --autofix
-  #       language: python
-  #       types: [python]
-  #       pass_filenames: false
-  #       additional_dependencies: [black]
+  - repo: local
+    hooks:
+      - id: autofix
+        name: autofix
+        entry: bash runtests.sh --autofix
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [black]
