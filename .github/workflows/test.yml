@@ -39,16 +39,16 @@ jobs:
           echo "Checking for changes: $i"
           if ! git show HEAD^:$i > /tmp/check_changes/$(basename $i)
           then
-            echo "skip=0" >> $GITHUB_OUTPUT
-            break
-          fi
-
-          if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
+            echo "New file found, or 'git show' failed, running tests."
+          elif ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            echo "skip=0" >> $GITHUB_OUTPUT
-            break
+          else
+            continue
           fi
+
+          echo "skip=0" >> $GITHUB_OUTPUT
+          break
         done
     - name: Install dependencies
       shell: bash
