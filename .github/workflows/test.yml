@@ -37,13 +37,18 @@ jobs:
         git diff --name-only HEAD^..HEAD ':!docs' | while read i
         do
           echo "Checking for changes: $i"
-          git show HEAD^:$i > /tmp/check_changes/$(basename $i)
-          if ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
+          if ! git show HEAD^:$i > /tmp/check_changes/$(basename $i)
+          then
+            echo "New file found, or 'git show' failed, running tests."
+          elif ! python ./compare_sources.py $i /tmp/check_changes/$(basename $i)
           then
             echo "Change found, running tests."
-            echo "skip=0" >> $GITHUB_OUTPUT
-            break
+          else
+            continue
           fi
+
+          echo "skip=0" >> $GITHUB_OUTPUT
+          break
         done
     - name: Install dependencies
       shell: bash
