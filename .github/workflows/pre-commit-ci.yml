@@ -1,61 +1,58 @@
 
-# name: pre-commit-ci
-
-# on:
-#   pull_request:
-#     branches: [main, dev]
-#   push:
-#     branches: [main, dev]
-
-# jobs:
-#   autofix:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v6
-#     - name: Set up Python 3.12
-#       uses: actions/setup-python@v6
-#       with:
-#         python-version: "3.12"
-#         cache: pip
-#     - name: Autofix
-#       shell: bash
-#       run: |
-#         bash runtests.sh --autofix
-#     # - uses: pre-commit/action@v3.0.1
-#     - name: pre-commit-ci-lite
-#       uses: pre-commit-ci/lite-action@v1.1.0
-#       if: always()
-
-
 name: pre-commit-ci
-on: [pull_request]
+
+on:
+  pull_request:
+    branches: [main, dev]
 
 jobs:
-  pre-commit:
-    name: "Pre-commit checks"
+  autofix:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        id: setup_python
-        with:
-          python-version: "3.12"
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.12"
+        cache: pip
+    - name: Autofix
+      shell: bash
+      run: |
+        bash runtests.sh --autofix
+    # - uses: pre-commit/action@v3.0.1
+    - uses: pre-commit-ci/lite-action@v1.1.0
+      if: always()
 
-      - name: Install pre-commit
-        run: pip install pre-commit
 
-      - name: Cache pre-commit tools
-        uses: actions/cache@v4
-        with:
-          key: pre-commit-${{ runner.os }}-${{ steps.setup_python.outputs.python-version}}-${{ hashFiles('.pre-commit-config.yaml') }}
-          path: ~/.cache/pre-commit
+# name: pre-commit-ci
+# on: [pull_request]
 
-      - name: Run pre-commit
-        shell: bash
-        run: |
-          bash runtests.sh --autofix
+# jobs:
+#   pre-commit:
+#     name: "Pre-commit checks"
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-python@v5
+#         id: setup_python
+#         with:
+#           python-version: "3.12"
 
-      - name: Run pre-commit-ci-lite
-        uses: pre-commit-ci/lite-action@v1.0.2
-        if: always()
+#       - name: Install pre-commit
+#         run: pip install pre-commit
+
+#       - name: Cache pre-commit tools
+#         uses: actions/cache@v4
+#         with:
+#           key: pre-commit-${{ runner.os }}-${{ steps.setup_python.outputs.python-version}}-${{ hashFiles('.pre-commit-config.yaml') }}
+#           path: ~/.cache/pre-commit
+
+#       - name: Run pre-commit
+#         shell: bash
+#         run: |
+#           bash runtests.sh --autofix
+
+#       - name: Run pre-commit-ci-lite
+#         uses: pre-commit-ci/lite-action@v1.0.2
+#         if: always()
