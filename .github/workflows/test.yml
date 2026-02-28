@@ -32,6 +32,7 @@ jobs:
       id: check-changes
       shell: bash
       run: |
+        set -e
         echo "skip=1" >> $GITHUB_OUTPUT
         mkdir -p /tmp/check_changes
         git diff --name-only HEAD^..HEAD ':!docs' | while read i
