@@ -52,6 +52,7 @@ jobs:
           path: ~/.cache/pre-commit
 
       - name: Run pre-commit
+        shell: bash
         run: |
           pre-commit run --all-files --show-diff-on-failure
           bash runtests.sh --autofix
