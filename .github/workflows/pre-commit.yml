@@ -1,28 +1,58 @@
 
-name: pre-commit-ci
+# name: pre-commit-ci
 
+# on:
+#   pull_request:
+#     branches: [main, dev]
+#   push:
+#     branches: [main, dev]
+
+# jobs:
+#   autofix:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v6
+#     - name: Set up Python 3.12
+#       uses: actions/setup-python@v6
+#       with:
+#         python-version: "3.12"
+#         cache: pip
+#     - name: Autofix
+#       shell: bash
+#       run: |
+#         bash runtests.sh --autofix
+#     # - uses: pre-commit/action@v3.0.1
+#     - name: pre-commit-ci-lite
+#       uses: pre-commit-ci/lite-action@v1.1.0
+#       if: always()
+
+
+name: pre-commit-ci
 on:
-  pull_request:
-    branches: [main, dev]
+  workflow_dispatch:
   push:
-    branches: [main, dev]
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
 
 jobs:
-  autofix:
+  pre-commit:
+    name: "Pre-commit checks"
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v6
-      with:
-        python-version: "3.12"
-        cache: pip
-    - name: Autofix
-      shell: bash
-      run: |
-        bash runtests.sh --autofix
-    # - uses: pre-commit/action@v3.0.1
-    - name: pre-commit-ci-lite
-      uses: pre-commit-ci/lite-action@v1.1.0
-      if: always()
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v6
+        id: setup_python
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Autofix
+        shell: bash
+        run: |
+          bash runtests.sh --autofix
+      - name: Run pre-commit-ci-lite
+        uses: pre-commit-ci/lite-action@v1.0.1
+        if: always()
