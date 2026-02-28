@@ -57,5 +57,5 @@ jobs:
           bash runtests.sh --autofix
 
       - name: Run pre-commit-ci-lite
-        uses: pre-commit-ci/lite-action@v1.1.0
+        uses: pre-commit-ci/lite-action@v1.0.2
         if: always()
