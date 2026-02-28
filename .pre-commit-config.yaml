@@ -2,7 +2,7 @@ default_language_version:
   python: python3
 
 ci:
-  autofix_prs: true
+  autofix_prs: false
   autofix_commit_msg: '[pre-commit.ci] Fixing issues with pre-commit'
   autoupdate_commit_msg: '[pre-commit.ci] autoupdate'
   autoupdate_schedule: weekly
