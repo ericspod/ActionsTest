@@ -28,7 +28,7 @@
 #       if: always()
 
 
-name: pre-commit-ci
+name: pre-commit-ci-lite
 on:
   # workflow_dispatch:
   # push:
