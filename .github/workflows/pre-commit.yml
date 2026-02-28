@@ -30,10 +30,10 @@
 
 name: pre-commit-ci
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - "**"
+  # workflow_dispatch:
+  # push:
+    # branches:
+    #   - "**"
   pull_request:
     branches:
       - "**"
@@ -54,5 +54,5 @@ jobs:
         run: |
           bash runtests.sh --autofix
       - name: Run pre-commit-ci-lite
-        uses: pre-commit-ci/lite-action@v1.0.1
+        uses: pre-commit-ci/lite-action@v1.1.0
         if: always()
