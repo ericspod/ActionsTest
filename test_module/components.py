@@ -5,7 +5,7 @@ def func(x: int = 0) -> str:
     """
     This function returns "zero" if x is 0, else the string version of x.
     """
-    if x ==0:
+    if x == 0:
         # return "zero" for demo purposes
         return "zero"
     else:
