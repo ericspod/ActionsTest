@@ -18,10 +18,10 @@ jobs:
       with:
         python-version: "3.12"
         cache: pip
-    # - name: Autofix
-      # shell: bash
-      # run: |
-        # bash runtests.sh --autofix
-    - uses: pre-commit/action@v3.0.1
+    - name: Autofix
+      shell: bash
+      run: |
+        bash runtests.sh --autofix
+    # - uses: pre-commit/action@v3.0.1
     - uses: pre-commit-ci/lite-action@v1.1.0
       if: always()
