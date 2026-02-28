@@ -32,14 +32,12 @@ jobs:
       id: check-changes
       shell: bash
       run: |
-        set -e
         echo "skip=1" >> $GITHUB_OUTPUT
         mkdir -p /tmp/check_changes
         git diff --name-only HEAD^..HEAD ':!docs' | while read i
         do
           echo "Checking for changes: $i"
-          git show HEAD^:$i > /tmp/check_changes/$(basename $i)
-          if $?
+          if ! git show HEAD^:$i > /tmp/check_changes/$(basename $i)
           then
             echo "skip=0" >> $GITHUB_OUTPUT
             break
