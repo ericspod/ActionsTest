@@ -1,5 +1,5 @@
 
-name: Pre-commit Action
+name: pre-commit-ci
 
 on:
   pull_request:
