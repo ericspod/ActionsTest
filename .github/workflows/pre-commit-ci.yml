@@ -29,7 +29,7 @@
 
 
 name: pre-commit-ci
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request]
 
 jobs:
   pre-commit:
@@ -58,5 +58,5 @@ jobs:
           bash runtests.sh --autofix
 
       - name: Run pre-commit-ci-lite
-        uses: pre-commit-ci/lite-action@v1.0.2
+        uses: pre-commit-ci/lite-action@v1.1.0
         if: always()
