@@ -17,7 +17,7 @@ jobs:
     - name: Set up Python {{ $PYTHON_VER1 }}
       uses: actions/setup-python@v6
       with:
-        python-version: $PYTHON_VER1
+        python-version: '{{ $PYTHON_VER1 }}'
         cache: pip
     - name: Autofix
       shell: bash
