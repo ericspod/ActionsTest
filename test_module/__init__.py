@@ -1,1 +1,1 @@
-from .components import func, abs
+from .components import abs, func
