@@ -57,7 +57,9 @@ def files_considered_equal(file1: str, file2: str) -> bool:
 
     if ext1 != ext2:  # if extensions aren't equal then definitely different
         return False
-    elif ext1 in SKIP_EXTS:  # if extensions are an ignored type, ie. docs, don't compare at all
+    elif (
+        ext1 in SKIP_EXTS
+    ):  # if extensions are an ignored type, ie. docs, don't compare at all
         return True
     elif ext1 != ".py":  # if not Python source files, assume different
         return False
