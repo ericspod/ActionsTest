@@ -12,6 +12,11 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  # automatically cancel the previously triggered workflows when there's a newer version
+  group: ci-tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     strategy:
