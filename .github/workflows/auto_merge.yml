@@ -1,9 +1,9 @@
 name: Auto-Update PR Branch
 
-on: workflow_dispatch
-  # push:
-  #   branches:
-  #     - main # Change to your primary target branch (e.g., master, develop)
+on:
+  push:
+    branches:
+      - main # Change to your primary target branch (e.g., master, develop)
 
 permissions:
   contents: write
@@ -22,7 +22,9 @@ jobs:
         run: |
           # Find all open PRs targeting this branch
           prs=$(gh pr list  --base ${{ github.ref_name }} --json number,headRefName)
+          # add later: --search "review:approved" 
 
+          # Go through each PR and merge branch
           echo "$prs" | jq -c '.[]' | while read -r pr; do
             pr_number=$(echo "$pr" | jq -r '.number')
             head_branch=$(echo "$pr" | jq -r '.headRefName')
