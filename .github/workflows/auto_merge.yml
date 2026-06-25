@@ -21,7 +21,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Find all open PRs targeting this branch
-          prs=$(gh pr list --search "review:approved" --base ${{ github.ref_name }} --json number,headRefName)
+          prs=$(gh pr list  --base ${{ github.ref_name }} --json number,headRefName)
           
           echo "$prs" | jq -c '.[]' | while read -r pr; do
             pr_number=$(echo "$pr" | jq -r '.number')
