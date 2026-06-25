@@ -22,13 +22,13 @@ jobs:
         run: |
           # Find all open PRs targeting this branch
           prs=$(gh pr list  --base ${{ github.ref_name }} --json number,headRefName)
-          
+
           echo "$prs" | jq -c '.[]' | while read -r pr; do
             pr_number=$(echo "$pr" | jq -r '.number')
             head_branch=$(echo "$pr" | jq -r '.headRefName')
-            
+
             echo "Attempting to update PR #$pr_number ($head_branch)..."
-            
+
             # Use GitHub CLI to merge the target branch into the PR branch
             gh pr update-branch "$pr_number" || echo "Skipping PR #$pr_number due to merge conflicts."
           done
