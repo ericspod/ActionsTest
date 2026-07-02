@@ -18,12 +18,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [windows-latest, macOS-latest, ubuntu-latest]
-    timeout-minutes: 40
-    runs-on: ${{ matrix.os }}
+  # This job will set its output value `skip` to 2 if only documentation was changed, either documentation files or
+  # the docstrings of source files. If any source lines are changed, or non-documentation files are changed, the 
+  # result is 0 which then triggers tests to run. This job works by using the compare_sources.py script to compare
+  # changed files to see if they differ in ways other than comments or docstrings.
+  test_skip:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check-changes.outputs.skip }}
     steps:
     - name: Checkout
       uses: actions/checkout@v6
@@ -55,16 +57,32 @@ jobs:
           echo "skip=0" >> $GITHUB_OUTPUT
           break
         done
+
+  test:
+    strategy:
+      matrix:
+        os: [windows-latest, macOS-latest, ubuntu-latest]
+    timeout-minutes: 40
+    needs: test_skip
+    if: needs.test_skip.outputs.skip == 0
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 2
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.12"
     - name: Install dependencies
       shell: bash
-      if: steps.check-changes.outputs.skip == 0
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       shell: bash
-      if: steps.check-changes.outputs.skip == 0
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
