@@ -1,9 +1,10 @@
-name: Auto-Update PR Branch
+name: Auto-Update PRs
 
 on:
   push:
     branches:
-      - main # Change to your primary target branch (e.g., master, develop)
+      - main # Change to your primary target branch (e.g., dev)
+  workflow_dispatch: # Allows manual triggering if needed
 
 permissions:
   contents: write
@@ -15,22 +16,28 @@ jobs:
     steps:
       - name: Checkout target branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history so branches can be merged locally
 
-      - name: Update out-of-date pull requests
+      - name: Update the oldest PR which is approved and automerging-enabled  
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Find all open PRs targeting this branch
-          prs=$(gh pr list  --base ${{ github.ref_name }} --json number,headRefName)
-          # add later: --search "review:approved"
+          # Find all open PRs targeting this branch which are open and approved
+          PR_DATA=$(gh pr list --state open --search 'review:approved' --base ${{ github.ref_name }} --json number,reviewDecision,autoMergeRequest)
 
-          # Go through each PR and merge branch
-          echo "$prs" | jq -c '.[]' | while read -r pr; do
-            pr_number=$(echo "$pr" | jq -r '.number')
-            head_branch=$(echo "$pr" | jq -r '.headRefName')
+          echo '================================'
+          echo "PR_DATA:"
+          echo $PR_DATA
+          echo '================================'
 
-            echo "Attempting to update PR #$pr_number ($head_branch)..."
+          # select the oldest open approved PR with automerge enabled
+          OLDEST_APPROVED=$(echo $PR_DATA | jq -r '.[] | select(.reviewDecision == "APPROVED") | select(.autoMergeRequest != null) | "\(.number)"'|head -n 1)
 
-            # Use GitHub CLI to merge the target branch into the PR branch
-            gh pr update-branch "$pr_number" || echo "Skipping PR #$pr_number due to merge conflicts."
-          done
+          if [ -z "$OLDEST_APPROVED" ]
+          then
+            echo "No approved PRs to update."
+          else
+            echo "Updating PR $OLDEST_APPROVED ..."
+            gh pr update-branch "$OLDEST_APPROVED" || echo "Failed to update PR #$OLDEST_APPROVED (merge conflicts?)."
+          fi
