@@ -17,3 +17,7 @@ def abs(value: int | float):
     Return the absolute value of `value`.
     """
     return sqrt(value * value)
+
+This is breaking code and not valid python
+so is this.
+
