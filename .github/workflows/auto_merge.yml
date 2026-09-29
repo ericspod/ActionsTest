@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0 # Fetches all history so branches can be merged locally
 
-      - name: Update the oldest PR which is approved and automerging-enabled  
+      - name: Update the oldest PR which is approved and automerging-enabled
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
