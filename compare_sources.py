@@ -29,17 +29,18 @@ def sources_equal(src1: str, src2: str) -> bool:
     """
     remdoc = RemoveDocstrings()
 
-    m1: ast.Module = remdoc.generic_visit(ast.parse(src1))
-    m2: ast.Module = remdoc.generic_visit(ast.parse(src2))
+    m1 = ast.parse(src1)
+    m2 = ast.parse(src2)
+    remdoc.visit(m1)
+    remdoc.visit(m2)
 
     list1 = list(ast.walk(m1))
     list2 = list(ast.walk(m2))
 
-    if len(list1) != len(list2):
+    if len(list1) != len(list2) or any(type(n1) is not type(n2) for n1, n2 in zip(list1, list2)):
         return False
 
-    # TODO: more efficient way than using ast.dump?
-    return all(type(n1) is type(n2) and ast.dump(n1) == ast.dump(n2) for n1, n2 in zip(list1, list2))
+    return ast.dump(m1) == ast.dump(m2)
 
 
 def files_considered_equal(file1: str, file2: str) -> bool:
