@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout target branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Fetches all history so branches can be merged locally
 
@@ -25,6 +25,12 @@ jobs:
         run: |
           # Find all open PRs targeting this branch which are open and approved
           PR_DATA=$(gh pr list --state open --search 'review:approved' --base ${{ github.ref_name }} --json number,reviewDecision,autoMergeRequest)
+
+          # if the search criteria doesn't work then take the first 200 open PRs
+          if [ "$PR_DATA" == "[]" ]
+          then
+            PR_DATA=$(gh pr list --state open -L 200 --base ${{ github.ref_name }} --json number,reviewDecision,autoMergeRequest)
+          fi
 
           echo '================================'
           echo "PR_DATA:"
