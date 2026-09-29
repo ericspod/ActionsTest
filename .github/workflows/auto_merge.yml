@@ -20,8 +20,6 @@ jobs:
           fetch-depth: 0 # Fetches all history so branches can be merged locally
 
       - name: Update the oldest PR which is approved and automerging-enabled
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Find all open PRs targeting this branch which are open and approved
           PR_DATA=$(gh pr list --state open --search 'review:approved' --base ${{ github.ref_name }} --json number,reviewDecision,autoMergeRequest)
